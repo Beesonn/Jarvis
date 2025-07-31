@@ -1,6 +1,7 @@
 from pymongo import MongoClient
+from vars import DB_URL
 
-client = MongoClient("")
+client = MongoClient(DB_URL)
 db = client["jarvis"]
 
 chats = db["chats"]

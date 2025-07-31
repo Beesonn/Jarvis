@@ -1,6 +1,5 @@
 from mango import Mango
 import datetime
-from database import *
 from vars import API_KEY
 
 client = Mango(api_key=API_KEY)  

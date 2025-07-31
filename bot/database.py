@@ -29,6 +29,10 @@ def set_model(model: str):
         upsert=True
     )
 
+def get_conv(id: int):
+    us = user.find_one({"id": id})
+    return us.get("messages", []) if us else []
+
 def add_user(id: int):
     if not user.find_one({"id": id}):    
         user.insert_one({"id": id, "messages": [], "model": "gpt-4o"})

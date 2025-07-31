@@ -22,20 +22,13 @@ def delete_conv(id: int):
         return True
     return False
 
-def set_model(model: str):
-    user.update_one(
-        {"id": id},
-        {"$set": {"model": model}},  
-        upsert=True
-    )
-
 def get_user(id: int):
     us = user.find_one({"id": id})
-    return us.get("model", "gpt-4o"), us.get("messages", [])
+    return us.get("messages", [])
 
 def add_user(id: int):
     if not user.find_one({"id": id}):    
-        user.insert_one({"id": id, "messages": [], "model": "gpt-4o"})
+        user.insert_one({"id": id, "messages": []})
 
 def add_chat(id: int):
     if not chats.find_one({"id": id}):    

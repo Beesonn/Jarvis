@@ -3,16 +3,10 @@ import datetime
 from database import *
 from vars import API_KEY
 
-def get_response(model: str = "gpt-4o", messages: list = []):
-    client = Mango(api_key=API_KEY)  
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages
-    )
+client = Mango(api_key=API_KEY)  
 
-    return response
     
-def text(m):
+def get_response(m):
     SYSTEM_PROMPT = f"""You are Jarvis, an advanced and helpful AI assistant.
 Last trained on Tuesday, May 13, 2025.
 You're a Telegram bot named Jarvis, developed by @XBOTSUPPORTS.
@@ -54,10 +48,11 @@ You are chatting with: {m.from_user.first_name}.
 """
     messages = get_user(m.from_user.id)
     messages.append({"role": "user", "content": m.text})
-    response = get_response(
+    response = client.chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": SYSTEM_PROMPT}]+messages
     )
     messages.append({"role": "assistant", "content": response.choices[0].message.content})
     set_conv(messages)
     return response.choices[0].message.content
+    

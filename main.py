@@ -6,7 +6,7 @@ from bot import *
 def main():
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
     application.run_polling()
   
 main()

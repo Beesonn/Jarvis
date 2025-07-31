@@ -1,7 +1,7 @@
 from mango import Mango
 from database import *
 
-def ai_response(model: str = "gpt-4o", messages: list = []):
+def get_response(model: str = "gpt-4o", messages: list = []):
     client = Mango(api_key="")
   
     response = client.chat.completions.create(
@@ -11,11 +11,11 @@ def ai_response(model: str = "gpt-4o", messages: list = []):
 
     return response
 
-def ai_chat(m):
+def text(m):
     client = Mango(api_key="")
-    model, messages = get_user(m.from_user.id)
+    messages = get_user(m.from_user.id)
     messages.append({"role": "user", "content": m.text})
-    response = ai_response(
+    response = get_response(
         model=model,
         messages=messages
     )

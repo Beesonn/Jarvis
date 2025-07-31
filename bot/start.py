@@ -1,4 +1,3 @@
-from database import *
 from telegram.ext import ContextTypes
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 

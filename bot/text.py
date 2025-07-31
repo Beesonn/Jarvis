@@ -1,18 +1,17 @@
 from mango import Mango
 import datetime
 from database import *
-
+from vars import API_KEY
 
 def get_response(model: str = "gpt-4o", messages: list = []):
-    client = Mango(api_key="")
-  
+    client = Mango(api_key=API_KEY)  
     response = client.chat.completions.create(
         model=model,
         messages=messages
     )
 
     return response
-
+    
 def text(m):
     SYSTEM_PROMPT = f"""You are Jarvis, an advanced and helpful AI assistant.
 Last trained on Tuesday, May 13, 2025.

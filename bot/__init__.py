@@ -1,2 +1,2 @@
-from chat import chat
-from start import start
+from .chat import chat
+from .start import start

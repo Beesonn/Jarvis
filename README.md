@@ -2,7 +2,6 @@
 
 A fast, powerful Telegram AI chatbot that can analyze images and solve your problems. Works in private and group chats.
 
----
 
 ## Commands
 
@@ -10,8 +9,6 @@ A fast, powerful Telegram AI chatbot that can analyze images and solve your prob
 start - Start the bot.
 newchat - Start a new conversation.
 ```
-
----
 
 ## Variables
 

@@ -6,13 +6,14 @@ A fast, powerful Telegram AI chatbot that can analyze images and solve your prob
 
 ## Commands
 
-* /start    – Start the bot.
-* /newchat  – Start a new conversation.
-
+```
+* /start - Start the bot.
+* /newchat - Start a new conversation.
+```
 
 ---
 
 ## Variables
 
-* TOKEN     – Get from @BotFather.
-* API_KEY   – Get using /mykeys from [@MangoAPIBOT](https://t.me/MangoAPIBOT)
+* `TOKEN`: Get from @BotFather.
+* `API_KEY`: Get using /mykeys from [@MangoAPIBOT](https://t.me/MangoAPIBOT)

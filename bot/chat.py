@@ -1,4 +1,4 @@
-from jarvis import get_response
+from .jarvis import get_response
 from telegram import Update
 from telegram.ext import ContextTypes
 

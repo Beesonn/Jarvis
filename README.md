@@ -16,4 +16,4 @@ newchat - Start a new conversation.
 ## Variables
 
 * `TOKEN`: Get from @BotFather.
-* `API_KEY`: Get using /mykeys from [@MangoAPIBOT](https://t.me/MangoAPIBOT)
+* `API_KEY`: Get using /mykeys from [@MangoAPIBot](https://t.me/MangoAPIBot)

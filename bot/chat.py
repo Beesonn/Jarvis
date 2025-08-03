@@ -82,11 +82,11 @@ You are chatting with: {m.from_user.first_name}.
                 ]
             }
         ] 
-        response = get_response(payload, "gpt-4o")
+        response = get_response(payload, "gpt-4o-mini-search-preview")
         messages.append({"role": "user", "content": input})   
     else:
         messages.append({"role": "user", "content": m.text})   
-        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-4o")        
+        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-4o-mini-search-preview")        
                         
     messages.append({"role": "assistant", "content": response})
     

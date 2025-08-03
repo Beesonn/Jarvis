@@ -5,6 +5,10 @@ from telegram.ext import ContextTypes
 
 chat_memory = {}
 
+async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_memory.pop(update.message.from_user.id, None)
+    await update.message.reply_text("Started a new chat!")
+    
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     m = update.message
     SYSTEM_PROMPT = f"""You are Jarvis, an advanced and helpful AI assistant.

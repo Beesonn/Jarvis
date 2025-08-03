@@ -11,6 +11,12 @@ async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     m = update.message
+    is_reply = m.reply_to_message and m.reply_to_message.from_user.id == context.bot.id  
+    is_mention = context.bot.username.lower() in m.text.lower()
+    
+    if not is_reply or not is_mention or m.chat.type == "private":
+        return 
+        
     SYSTEM_PROMPT = f"""You are Jarvis, an advanced and helpful AI assistant.
 Last trained on Tuesday, May 13, 2025.
 You're a Telegram bot named Jarvis, developed by @XBOTSUPPORTS.
@@ -85,9 +91,4 @@ You are chatting with: {m.from_user.first_name}.
     messages.append({"role": "assistant", "content": response})
     
     chat_memory[m.from_user.id] = messages
-    
-    is_reply = m.reply_to_message and m.reply_to_message.from_user.id == context.bot.id  
-    is_mention = context.bot.username.lower() in m.text.lower()
-    
-    if is_reply or is_mention or m.chat.type != "private":
-        await m.reply_text(response, parse_mode="markdown")            
+    await m.reply_text(response, parse_mode="markdown")            

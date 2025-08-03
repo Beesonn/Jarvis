@@ -12,7 +12,7 @@ def alive_task():
             requests.get(URL, timeout=5)
         except:
             pass
-        time.sleep(20)
+        time.sleep(10)
         
 
 def main():

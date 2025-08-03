@@ -14,7 +14,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     is_reply = m.reply_to_message and m.reply_to_message.from_user.id == context.bot.id  
     is_mention = context.bot.username.lower() in m.text.lower()
     
-    if m.chat.type != "private" and not is_mention and is_reply:
+    if m.chat.type != "private" and not is_mention and not is_reply:
         return 
         
     SYSTEM_PROMPT = f"""You are Jarvis, an advanced and helpful AI assistant.

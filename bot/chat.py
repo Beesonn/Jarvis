@@ -90,4 +90,4 @@ You are chatting with: {m.from_user.first_name}.
     is_mention = context.bot.username.lower() in m.text.lower()
     
     if is_reply or is_mention or m.chat.type != "private":
-        await m.reply_text(response.replace, parse_mode="markdown")            
+        await m.reply_text(response, parse_mode="markdown")            

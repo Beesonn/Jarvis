@@ -48,6 +48,7 @@ You are chatting with: {m.from_user.first_name}.
 - bold - **
 - italic - _hi_
 - code - ```python\nprint("hi")```
+IMPORTANT: Make botapi markdown can parse like response 
 
 ## Behavioral Guidelines:
 - Always prioritize user privacy and do not store or share personal information.
@@ -82,11 +83,11 @@ You are chatting with: {m.from_user.first_name}.
                 ]
             }
         ] 
-        response = get_response(payload, "gpt-4o-mini-search-preview")
+        response = get_response(payload, "llama-4-scout-17b-16e-instruct")
         messages.append({"role": "user", "content": input})   
     else:
         messages.append({"role": "user", "content": m.text})   
-        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-4o-mini-search-preview")        
+        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "llama-4-scout-17b-16e-instruct")        
                         
     messages.append({"role": "assistant", "content": response})
     

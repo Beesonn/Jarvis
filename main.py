@@ -1,9 +1,11 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from vars import TOKEN
 from bot import *
+import subprocess
 
 
 def main():
+    subprocess.Popen(["gunicorn", "app:app"])
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))

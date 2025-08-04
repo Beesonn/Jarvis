@@ -28,6 +28,7 @@ async def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
-    await application.run_polling()
+    await application.run_polling(close_loop=False)
   
-asyncio.run(main())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())

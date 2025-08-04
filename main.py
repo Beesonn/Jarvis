@@ -29,6 +29,6 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
-    await application.run_polling(close_loop=False)
+    application.run_polling()
   
 main()

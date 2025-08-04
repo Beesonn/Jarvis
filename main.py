@@ -4,17 +4,20 @@ import threading
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
+import aiohttp
 import asyncio
 
 
 async def alive_task():
-    while True:
-        try:
-            requests.get(URL, timeout=5)
-        except:
-            pass
-        await asyncio.sleep(10)
-        
+    async with aiohttp.ClientSession() as session:
+        while True:
+            try:
+                async with session.get(URL, timeout=5) as response:
+                    pass
+            except Exception as e:
+                print(f"Error in alive_task: {e}")
+            await asyncio.sleep(10)
+            
 
 async def main():
     if WEBHOOK:

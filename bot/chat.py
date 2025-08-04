@@ -12,7 +12,7 @@ async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     m = update.message
     is_reply = m.reply_to_message and m.reply_to_message.from_user.id == context.bot.id  
-    is_mention = context.bot.username.lower() in m.text.lower()
+    is_mention = m.text and context.bot.username.lower() in m.text.lower()
     
     if m.chat.type != "private" and not is_mention and not is_reply:
         return 

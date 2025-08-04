@@ -19,16 +19,16 @@ async def alive_task():
             await asyncio.sleep(10)
             
 
-async def main():
+def main():
     if WEBHOOK:
         subprocess.Popen(["gunicorn", "app:app"])    
     if URL:
-        asyncio.create_task(alive_task())
+        loop = asyncio.get_event_loop()
+        loop.create_task(alive_task())
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
     await application.run_polling(close_loop=False)
   
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+main()

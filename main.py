@@ -4,9 +4,10 @@ import threading
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
+import asyncio
 
 
-def alive_task():
+async def alive_task():
     while True:
         try:
             requests.get(URL, timeout=5)
@@ -15,15 +16,15 @@ def alive_task():
         time.sleep(10)
         
 
-def main():
+async def main():
     if WEBHOOK:
         subprocess.Popen(["gunicorn", "app:app"])    
     if URL:
-        threading.Thread(target=alive_task, daemon=True).start()
+        asyncio.create_task(alive_task())
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat, block=False))
     application.run_polling()
   
-main()
+asyncio.run(main())

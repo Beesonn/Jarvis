@@ -13,7 +13,7 @@ async def alive_task():
             requests.get(URL, timeout=5)
         except:
             pass
-        time.sleep(10)
+        await asyncio.sleep(10)
         
 
 async def main():

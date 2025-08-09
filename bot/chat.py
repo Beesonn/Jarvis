@@ -72,7 +72,7 @@ IMPORTANT: Make botapi markdown can parse like response
 """   
     messages = chat_memory.get(update.message.from_user.id, [])
     photo = m.photo or (m.reply_to_message.photo if m.reply_to_message else None)
-    file = m.document or (m.reply_to_message.document if m.reply_to_message else None)
+    document = m.document or (m.reply_to_message.document if m.reply_to_message else None)
     await context.bot.send_chat_action(chat_id=m.chat.id, action="typing")
     if photo:        
         file_id = photo[-1].file_id        
@@ -94,12 +94,12 @@ IMPORTANT: Make botapi markdown can parse like response
         ] 
         response = await get_response(payload, "gpt-5-chat")
         messages.append({"role": "user", "content": input})   
-    elif file:
-        file_id = file.file_id
-        file_name = file.file_name
-        file = await context.bot.get_file(file_id).file_path
+    elif document:
+        file_id = document.file_id
+        file_name = document.file_name
+        file = await context.bot.get_file(file_id)
         try:
-            bs = file_url_to_base64(file)
+            bs = file_url_to_base64(file.file_path)
         except:
             await m.reply_text("Failed to download file")
             return 

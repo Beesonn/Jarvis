@@ -107,15 +107,15 @@ IMPORTANT: Make botapi markdown can parse like response
         payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
             {
                 "role": "user",
-                "content": [
-                    {"type": "text", "text": input},
+                "content": [                    
                     {
                         "type": "file",
                         "file": {
                             "filename": file_name,
                             "file_data": bs
                         }
-                    }
+                    },
+                    {"type": "text", "text": input}
                 ]
             }
         ]

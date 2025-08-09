@@ -28,7 +28,7 @@ def main():
     application = Application.builder().token(TOKEN).defaults(Defaults(block=False)).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
-    application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat, block=False))
+    application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat))
     application.run_polling()
   
 main()

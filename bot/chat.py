@@ -5,8 +5,71 @@ from telegram.ext import ContextTypes
 import aiohttp
 import base64
 import mimetypes
+import os
+import asyncio
+import zipfile
+import tempfile
+import shutil
+from aiofiles import open as aio_open
 
 chat_memory = {}
+
+
+ALLOWED = {".py", ".txt", ".md", ".json", ".html", ".css", ".js", ".yml", ".yaml", ".xml"}
+
+async def download_file(url, save_path):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            resp.raise_for_status()
+            async with aio_open(save_path, "wb") as f:
+                async for chunk in resp.content.iter_chunked(8192):
+                    await f.write(chunk)
+
+async def read_text_file(file_path, base_folder=None):
+    rel_path = os.path.relpath(file_path, base_folder) if base_folder else os.path.basename(file_path)
+    try:
+        async with aio_open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = await f.read()
+        return f"{rel_path}\n{{Code}}\n{content}\n"
+    except Exception as e:
+        return None
+
+async def process_zip(zip_path):
+    output = []
+    temp_dir = tempfile.mkdtemp()
+    try:
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(temp_dir)
+
+        for root, _, files in os.walk(temp_dir):
+            for file in files:
+                ext = os.path.splitext(file)[1].lower()
+                file_path = os.path.join(root, file)
+                rel_path = os.path.relpath(file_path, temp_dir)
+                if ext in ALLOWED:
+                    output.append(await read_text_file(file_path, temp_dir))                
+    finally:
+        shutil.rmtree(temp_dir)
+    return "".join(output)
+
+async def get_text(url):
+    temp_dir = tempfile.mkdtemp()
+    file_name = os.path.basename(url.split("?")[0])
+    save_path = os.path.join(temp_dir, file_name)
+
+    try:
+        await download_file(url, save_path)
+        ext = os.path.splitext(file_name)[1].lower()
+
+        if ext == ".zip":
+            return await process_zip(save_path)
+        elif ext in ALLOWED:
+            return await read_text_file(save_path)
+        else:
+            return None
+    finally:
+        shutil.rmtree(temp_dir)
+
 
 async def file_url_to_data_url(url: str) -> str:
     async with aiohttp.ClientSession() as session:
@@ -105,24 +168,35 @@ IMPORTANT: Make botapi markdown can parse like response
         file_name = document.file_name
         input = m.caption or m.text or "Tell me about this file."        
         
-        file = await context.bot.get_file(file_id)
-        bs = await file_url_to_data_url(file.file_path)
-        
-        payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
-            {
-                "role": "user",
-                "content": [                    
-                    {
-                        "type": "file",
-                        "file": {
-                            "filename": file_name,
-                            "file_data": bs
-                        }
-                    },
-                    {"type": "text", "text": input}
-                ]
-            }
-        ]
+        file = await context.bot.get_file(file_id)        
+        ext = os.path.splitext(file_name)[1].lower()
+        if ext == ".pdf":
+            bs = await file_url_to_data_url(file.file_path)
+            payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
+                {
+                    "role": "user",
+                    "content": [                    
+                        {
+                            "type": "file",
+                            "file": {
+                                "filename": file_name,
+                                "file_data": bs
+                            }
+                        },
+                        {"type": "text", "text": input}
+                    ]
+                }
+            ]
+        else:            
+            payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages 
+            txtfile = await get_text(file.file_path)
+            payload.append({
+                "role": "system",
+                "content": f"The user has provided a file, including its name, folder names, and code content: {txtfile}. "
+                           f"Analyze the file and search for relevant information. "
+                           f"The user's additional input is: {m.text}"
+            })
+            payload.append({"role": "user", "content": m.text})
         response = await get_response(payload, "gpt-5-chat")
         messages.append({"role": "user", "content": input})   
     else:

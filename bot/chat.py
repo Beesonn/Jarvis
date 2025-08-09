@@ -10,7 +10,6 @@ import asyncio
 import zipfile
 import tempfile
 import shutil
-from aiofiles import open as aio_open
 
 chat_memory = {}
 
@@ -28,7 +27,7 @@ async def download_file(url, save_path):
 async def read_text_file(file_path, base_folder=None):
     rel_path = os.path.relpath(file_path, base_folder) if base_folder else os.path.basename(file_path)
     try:
-        async with aio_open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
             content = await f.read()
         return f"{rel_path}\n{{Code}}\n{content}\n"
     except Exception as e:

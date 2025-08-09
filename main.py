@@ -21,7 +21,7 @@ async def alive_task():
             
 
 def main():       
-    application = ApplicationBuilder().token(TOKEN).defaults(Defaults(block=False)).build()
+    application = ApplicationBuilder().token(TOKEN).concurrent_updates(True).defaults(Defaults(block=False)).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat))

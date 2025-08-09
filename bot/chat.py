@@ -174,8 +174,11 @@ IMPORTANT: Make botapi markdown can parse like response
         file_id = document.file_id
         file_name = document.file_name
         input = m.caption or m.text or "Tell me about this file."        
-        
-        file = await context.bot.get_file(file_id)        
+        try:
+            file = await context.bot.get_file(file_id)
+        except:
+            await m.reply_text("Failed to download the file")
+            return 
         ext = os.path.splitext(file_name)[1].lower()
         if ext == ".pdf":
             bs = await file_url_to_data_url(file.file_path)
@@ -197,6 +200,8 @@ IMPORTANT: Make botapi markdown can parse like response
         else:            
             payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages 
             txtfile = await get_text(file.file_path)
+            if not txtfile;
+                return await m.reply_text("This type of file is not supported.")
             payload.append({
                 "role": "system",
                 "content": f"The user has provided a file and the file name is {file_name}, including its name, folder names, and code content: {txtfile}. "
@@ -204,10 +209,14 @@ IMPORTANT: Make botapi markdown can parse like response
                            f"The user's additional input is: {m.text}"
             })
             payload.append({"role": "user", "content": m.text})
-        response = await get_response(payload, "gpt-5-chat")
+        try:
+            response = await get_response(payload, "gpt-5-chat")
+        except:
+            await m.reply_text("Falid to read the file")
+            return 
         messages.append({"role": "user", "content": input})   
     else:
-        messages.append({"role": "user", "content": m.text})   
+        messages.append({"role": "user", "content": m.text})    
         response = await get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-5-chat")        
                         
     messages.append({"role": "assistant", "content": response})

@@ -20,7 +20,7 @@ async def download_file(url, save_path):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             resp.raise_for_status()
-            async with aio_open(save_path, "wb") as f:
+            async with open(save_path, "wb") as f:
                 async for chunk in resp.content.iter_chunked(8192):
                     await f.write(chunk)
 

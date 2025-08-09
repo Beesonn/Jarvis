@@ -97,6 +97,7 @@ IMPORTANT: Make botapi markdown can parse like response
     elif document:
         file_id = document.file_id
         file_name = document.file_name
+        input = m.caption or m.text or "Tell me about this file."
         file = await context.bot.get_file(file_id)
         try:
             bs = file_url_to_base64(file.file_path)

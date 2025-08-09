@@ -1,7 +1,7 @@
 import subprocess
 import time
 import threading
-from telegram.ext import Application, CommandHandler, MessageHandler, Defaults, filters
+from telegram.ext import Application, Update, CommandHandler, MessageHandler, Defaults, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
 import aiohttp
@@ -29,6 +29,6 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat))
-    application.run_polling()
+    application.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
   
 main()

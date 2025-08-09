@@ -64,7 +64,7 @@ IMPORTANT: Make botapi markdown can parse like response
 """   
     messages = chat_memory.get(update.message.from_user.id, [])
     photo = m.photo or (m.reply_to_message.photo if m.reply_to_message else None)
-    await context.bot.send_chat_action(chat_id=m.chat.id, action="typing")
+    # await context.bot.send_chat_action(chat_id=m.chat.id, action="typing")
     if photo:        
         file_id = photo[-1].file_id
         file = await context.bot.get_file(file_id)   

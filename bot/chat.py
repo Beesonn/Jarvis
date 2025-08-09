@@ -83,11 +83,11 @@ IMPORTANT: Make botapi markdown can parse like response
                 ]
             }
         ] 
-        response = get_response(payload, "llama-4-scout-17b-16e-instruct")
+        response = get_response(payload, "gpt-5-chat")
         messages.append({"role": "user", "content": input})   
     else:
         messages.append({"role": "user", "content": m.text})   
-        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "llama-4-scout-17b-16e-instruct")        
+        response = get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-5-chat")        
                         
     messages.append({"role": "assistant", "content": response})
     

@@ -19,16 +19,18 @@ async def alive_task():
             await asyncio.sleep(10)
             
 
-def main():
-    if WEBHOOK:
-        subprocess.Popen(["gunicorn", "app:app"])    
-    if URL:
-        loop = asyncio.get_event_loop()
-        loop.create_task(alive_task())   
+def main():       
     application = Application.builder().token(TOKEN).defaults(Defaults(block=False)).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat))
     application.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
-  
-main()
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    if WEBHOOK:
+        subprocess.Popen(["gunicorn", "app:app"])    
+    if URL:   
+        loop.create_task(alive_task())  
+    main()

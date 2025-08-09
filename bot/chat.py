@@ -22,13 +22,13 @@ async def download_file(url, save_path):
             resp.raise_for_status()
             with open(save_path, "wb") as f:
                 async for chunk in resp.content.iter_chunked(8192):
-                    await f.write(chunk)
+                    f.write(chunk)
 
 async def read_text_file(file_path, base_folder=None):
     rel_path = os.path.relpath(file_path, base_folder) if base_folder else os.path.basename(file_path)
     try:
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-            content = await f.read()
+            content = f.read()
         return f"{rel_path}\n{{Code}}\n{content}\n"
     except Exception as e:
         return None

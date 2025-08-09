@@ -2,7 +2,7 @@ import subprocess
 import time
 import threading
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, Defaults, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, Defaults, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
 import aiohttp
@@ -21,7 +21,7 @@ async def alive_task():
             
 
 def main():       
-    application = Application.builder().token(TOKEN).defaults(Defaults(block=False)).build()
+    application = ApplicationBuilder().token(TOKEN).defaults(Defaults(block=False)).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat))

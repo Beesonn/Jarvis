@@ -83,11 +83,11 @@ IMPORTANT: Make botapi markdown can parse like response
                 ]
             }
         ] 
-        response = await get_response(payload, "gpt-5-chat")
+        response = await get_response(payload, "deepseek-v3")
         messages.append({"role": "user", "content": input})   
     else:
         messages.append({"role": "user", "content": m.text})   
-        response = await get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-5-chat")        
+        response = await get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "deepseek-v3")        
                         
     messages.append({"role": "assistant", "content": response})
     

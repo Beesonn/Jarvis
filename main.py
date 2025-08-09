@@ -1,7 +1,7 @@
 import subprocess
 import time
 import threading
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, Defaults, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
 import aiohttp
@@ -24,8 +24,8 @@ def main():
         subprocess.Popen(["gunicorn", "app:app"])    
     if URL:
         loop = asyncio.get_event_loop()
-        loop.create_task(alive_task())
-    application = ApplicationBuilder().token(TOKEN).build()
+        loop.create_task(alive_task())   
+    application = Application.builder().token(TOKEN).defaults(Defaults(block=False)).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("newchat", newchat))
     application.add_handler(MessageHandler(filters.TEXT | filters.PHOTO & ~filters.COMMAND, chat, block=False))

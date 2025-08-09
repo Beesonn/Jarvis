@@ -191,7 +191,7 @@ IMPORTANT: Make botapi markdown can parse like response
             txtfile = await get_text(file.file_path)
             payload.append({
                 "role": "system",
-                "content": f"The user has provided a file, including its name, folder names, and code content: {txtfile}. "
+                "content": f"The user has provided a file and the file name is {file_name}, including its name, folder names, and code content: {txtfile}. "
                            f"Analyze the file and search for relevant information. "
                            f"The user's additional input is: {m.text}"
             })

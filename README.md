@@ -12,8 +12,8 @@ A fast, powerful Telegram AI chatbot that can analyze images and solve your prob
 ## Commands
 
 ```
-start - Start the bot and say hello.
-newchat - Start a new conversation.
+/start - Start the bot and say hello.
+/newchat - Start a new conversation.
 ```
 
 ## Variables

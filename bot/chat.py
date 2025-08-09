@@ -6,9 +6,7 @@ import aiohttp
 import base64
 import mimetypes
 
-
 chat_memory = {}
-
 
 async def file_url_to_data_url(url: str) -> str:
     async with aiohttp.ClientSession() as session:
@@ -20,7 +18,6 @@ async def file_url_to_data_url(url: str) -> str:
                 mime_type = "application/octet-stream"
             
             return f"data:{mime_type};base64,{base64.b64encode(data).decode('utf-8')}"
-
 
 async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_memory.pop(update.message.from_user.id, None)
@@ -109,7 +106,7 @@ IMPORTANT: Make botapi markdown can parse like response
         input = m.caption or m.text or "Tell me about this file."        
         
         file = await context.bot.get_file(file_id)
-        bs = await file_url_to_base64(file.file_path)
+        bs = await file_url_to_data_url(file.file_path)
         
         payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
             {

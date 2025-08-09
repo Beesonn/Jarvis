@@ -2,8 +2,16 @@ from .jarvis import get_response
 from datetime import datetime
 from telegram import Update
 from telegram.ext import ContextTypes
+import aiohttp
+import base64
 
 chat_memory = {}
+
+async def file_url_to_base64(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:          
+            data = await resp.read()
+            return base64.b64encode(data).decode('utf-8')
 
 async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_memory.pop(update.message.from_user.id, None)
@@ -64,9 +72,10 @@ IMPORTANT: Make botapi markdown can parse like response
 """   
     messages = chat_memory.get(update.message.from_user.id, [])
     photo = m.photo or (m.reply_to_message.photo if m.reply_to_message else None)
+    file = m.document or (m.reply_to_message.document if m.reply_to_message else None)
     await context.bot.send_chat_action(chat_id=m.chat.id, action="typing")
     if photo:        
-        file_id = photo[-1].file_id
+        file_id = photo[-1].file_id        
         file = await context.bot.get_file(file_id)   
         input = m.caption or m.text or "Tell me about this image."
         payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
@@ -83,6 +92,32 @@ IMPORTANT: Make botapi markdown can parse like response
                 ]
             }
         ] 
+        response = await get_response(payload, "gpt-5-chat")
+        messages.append({"role": "user", "content": input})   
+    elif file:
+        file_id = file.file_id
+        file_name = file.file_name
+        file = await context.bot.get_file(file_id).file_path
+        try:
+            bs = file_url_to_base64(file)
+        except:
+            await m.reply_text("Failed to download file")
+            return 
+        payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages + [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": input},
+                    {
+                        "type": "file",
+                        "file": {
+                            "filename": file_name,
+                            "file_data": bs
+                        }
+                    }
+                ]
+            }
+        ]
         response = await get_response(payload, "gpt-5-chat")
         messages.append({"role": "user", "content": input})   
     else:

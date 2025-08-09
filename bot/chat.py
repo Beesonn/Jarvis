@@ -4,14 +4,25 @@ from telegram import Update
 from telegram.ext import ContextTypes
 import aiohttp
 import base64
+import mimetypes
+
 
 chat_memory = {}
 
-async def file_url_to_base64(url):
+
+async def file_url_to_data_url(url: str) -> str:
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:          
+        async with session.get(url) as resp:
+            if resp.status != 200:
+                raise Exception(f"Failed to fetch file: {resp.status}")
             data = await resp.read()
-            return base64.b64encode(data).decode('utf-8')
+            
+            mime_type, _ = mimetypes.guess_type(url)
+            if not mime_type:
+                mime_type = "application/octet-stream"
+            
+            return f"data:{mime_type};base64,{base64.b64encode(data).decode('utf-8')}"
+
 
 async def newchat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_memory.pop(update.message.from_user.id, None)

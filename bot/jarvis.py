@@ -1,11 +1,11 @@
-from mango import Mango
+from mango import AsyncMango
 from vars import API_KEY
 
-client = Mango(api_key=API_KEY)  
+client = AsyncMango(api_key=API_KEY)  
 
     
 async def get_response(messages: list, model: str):            
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=model,
         messages=messages
     )    

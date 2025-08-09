@@ -12,9 +12,7 @@ chat_memory = {}
 
 async def file_url_to_data_url(url: str) -> str:
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            if resp.status != 200:
-                raise Exception(f"Failed to fetch file: {resp.status}")
+        async with session.get(url) as resp:            
             data = await resp.read()
             
             mime_type, _ = mimetypes.guess_type(url)

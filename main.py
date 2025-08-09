@@ -34,4 +34,4 @@ if __name__ == "__main__":
         subprocess.Popen(["gunicorn", "app:app"])    
     if URL:   
         loop.create_task(alive_task())  
-    loop.create_task(main())
+    main()

@@ -14,13 +14,13 @@ import shutil
 chat_memory = {}
 
 
-ALLOWED = {".py", ".txt", ".md", ".json", ".html", ".css", ".js", ".yml", ".yaml", ".xml"}
+ALLOWED = [".py", ".txt", ".md", ".json", ".html", ".css", ".js", ".yml", ".yaml", ".xml"]
 
 async def download_file(url, save_path):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             resp.raise_for_status()
-            async with open(save_path, "wb") as f:
+            with open(save_path, "wb") as f:
                 async for chunk in resp.content.iter_chunked(8192):
                     await f.write(chunk)
 

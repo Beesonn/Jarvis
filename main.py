@@ -1,7 +1,8 @@
 import subprocess
 import time
 import threading
-from telegram.ext import Application, Update, CommandHandler, MessageHandler, Defaults, filters
+from telegram import Update
+from telegram.ext import Application, CommandHandler, MessageHandler, Defaults, filters
 from vars import TOKEN, WEBHOOK, URL
 from bot import *
 import aiohttp

@@ -210,14 +210,14 @@ IMPORTANT: Make botapi markdown can parse like response
             })
             payload.append({"role": "user", "content": m.text})
         try:
-            response = await get_response(payload, "gpt-5-chat")
+            response = await get_response(payload, "gpt-4o")
         except:
             await m.reply_text("Falid to read the file")
             return 
         messages.append({"role": "user", "content": input})   
     else:
         messages.append({"role": "user", "content": m.text})    
-        response = await get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-5-chat")        
+        response = await get_response([{"role": "system", "content": SYSTEM_PROMPT}]+messages, "gpt-4o")        
                         
     messages.append({"role": "assistant", "content": response})
     

@@ -168,7 +168,7 @@ IMPORTANT: Make botapi markdown can parse like response
                 ]
             }
         ] 
-        response = await get_response(payload, "gpt-5-chat")
+        response = await get_response(payload, "gpt-4o")
         messages.append({"role": "user", "content": input})   
     elif document:
         file_id = document.file_id
@@ -200,7 +200,7 @@ IMPORTANT: Make botapi markdown can parse like response
         else:            
             payload = [{"role": "system", "content": SYSTEM_PROMPT}] + messages 
             txtfile = await get_text(file.file_path)
-            if not txtfile;
+            if not txtfile:
                 return await m.reply_text("This type of file is not supported.")
             payload.append({
                 "role": "system",
